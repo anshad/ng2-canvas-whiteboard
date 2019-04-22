@@ -8,7 +8,7 @@ var canvas_whiteboard_point_1 = require("./canvas-whiteboard-point");
 var canvas_whiteboard_shape_service_1 = require("./shapes/canvas-whiteboard-shape.service");
 var rxjs_1 = require("rxjs");
 var canvas_whiteboard_shape_options_1 = require("./shapes/canvas-whiteboard-shape-options");
-var cloneDeep = require("lodash.cloneDeep");
+var cloneDeep = require("lodash.clonedeep");
 var CanvasWhiteboardComponent = (function () {
     function CanvasWhiteboardComponent(ngZone, _changeDetector, _canvasWhiteboardService, _canvasWhiteboardShapeService) {
         this.ngZone = ngZone;
@@ -17,11 +17,11 @@ var CanvasWhiteboardComponent = (function () {
         this._canvasWhiteboardShapeService = _canvasWhiteboardShapeService;
         //Number of ms to wait before sending out the updates as an array
         this.batchUpdateTimeoutDuration = 100;
-        this.drawButtonText = "";
-        this.clearButtonText = "";
-        this.undoButtonText = "";
-        this.redoButtonText = "";
-        this.saveDataButtonText = "";
+        this.drawButtonText = '';
+        this.clearButtonText = '';
+        this.undoButtonText = '';
+        this.redoButtonText = '';
+        this.saveDataButtonText = '';
         this.drawButtonEnabled = true;
         this.clearButtonEnabled = true;
         this.undoButtonEnabled = false;
@@ -30,17 +30,17 @@ var CanvasWhiteboardComponent = (function () {
         this.shouldDownloadDrawing = true;
         this.colorPickerEnabled = false;
         this.lineWidth = 2;
-        this.strokeColor = "rgba(0, 0, 0, 1)";
-        this.startingColor = "#fff";
+        this.strokeColor = 'rgba(0, 0, 0, 1)';
+        this.startingColor = '#fff';
         this.scaleFactor = 0;
         this.drawingEnabled = false;
         this.showStrokeColorPicker = false;
         this.showFillColorPicker = false;
-        this.lineJoin = "round";
-        this.lineCap = "round";
+        this.lineJoin = 'round';
+        this.lineCap = 'round';
         this.shapeSelectorEnabled = true;
         this.showShapeSelector = false;
-        this.fillColor = "rgba(0,0,0,0)";
+        this.fillColor = 'rgba(0,0,0,0)';
         this.onClear = new core_1.EventEmitter();
         this.onUndo = new core_1.EventEmitter();
         this.onRedo = new core_1.EventEmitter();
@@ -79,8 +79,8 @@ var CanvasWhiteboardComponent = (function () {
         this._initInputsFromOptions(this.options);
         this._initCanvasEventListeners();
         this._initCanvasServiceObservables();
-        this.context = this.canvas.nativeElement.getContext("2d");
-        this._incompleteShapesCanvasContext = this._incompleteShapesCanvas.nativeElement.getContext("2d");
+        this.context = this.canvas.nativeElement.getContext('2d');
+        this._incompleteShapesCanvasContext = this._incompleteShapesCanvas.nativeElement.getContext('2d');
     };
     /**
      * If an image exists and it's url changes, we need to redraw the new image on the canvas.
@@ -187,13 +187,15 @@ var CanvasWhiteboardComponent = (function () {
         var _this = this;
         this.ngZone.runOutsideAngular(function () {
             _this._resizeSubscription = rxjs_1.Observable.fromEvent(window, 'resize')
-                .debounceTime(200).distinctUntilChanged().subscribe(function () {
+                .debounceTime(200)
+                .distinctUntilChanged()
+                .subscribe(function () {
                 _this.ngZone.run(function () {
                     _this._redrawCanvasOnResize();
                 });
             });
         });
-        window.addEventListener("keydown", this._canvasKeyDown.bind(this), false);
+        window.addEventListener('keydown', this._canvasKeyDown.bind(this), false);
     };
     /**
      * Subscribes to new signals in the canvas whiteboard service and executes methods accordingly
@@ -203,14 +205,10 @@ var CanvasWhiteboardComponent = (function () {
      */
     CanvasWhiteboardComponent.prototype._initCanvasServiceObservables = function () {
         var _this = this;
-        this._canvasWhiteboardServiceSubscriptions.push(this._canvasWhiteboardService.canvasDrawSubject$
-            .subscribe(function (updates) { return _this.drawUpdates(updates); }));
-        this._canvasWhiteboardServiceSubscriptions.push(this._canvasWhiteboardService.canvasClearSubject$
-            .subscribe(function () { return _this.clearCanvas(); }));
-        this._canvasWhiteboardServiceSubscriptions.push(this._canvasWhiteboardService.canvasUndoSubject$
-            .subscribe(function (updateUUD) { return _this._undoCanvas(updateUUD); }));
-        this._canvasWhiteboardServiceSubscriptions.push(this._canvasWhiteboardService.canvasRedoSubject$
-            .subscribe(function (updateUUD) { return _this._redoCanvas(updateUUD); }));
+        this._canvasWhiteboardServiceSubscriptions.push(this._canvasWhiteboardService.canvasDrawSubject$.subscribe(function (updates) { return _this.drawUpdates(updates); }));
+        this._canvasWhiteboardServiceSubscriptions.push(this._canvasWhiteboardService.canvasClearSubject$.subscribe(function () { return _this.clearCanvas(); }));
+        this._canvasWhiteboardServiceSubscriptions.push(this._canvasWhiteboardService.canvasUndoSubject$.subscribe(function (updateUUD) { return _this._undoCanvas(updateUUD); }));
+        this._canvasWhiteboardServiceSubscriptions.push(this._canvasWhiteboardService.canvasRedoSubject$.subscribe(function (updateUUD) { return _this._redoCanvas(updateUUD); }));
         this._registeredShapesSubscription = this._canvasWhiteboardShapeService.registeredShapes$.subscribe(function (shapes) {
             if (!_this.selectedShapeConstructor || !_this._canvasWhiteboardShapeService.isRegisteredShape(_this.selectedShapeConstructor)) {
                 _this.selectedShapeConstructor = shapes[0];
@@ -248,7 +246,7 @@ var CanvasWhiteboardComponent = (function () {
             return;
         }
         this._imageElement = new Image();
-        this._imageElement.addEventListener("load", function () {
+        this._imageElement.addEventListener('load', function () {
             _this._canDraw = true;
             callbackFn && callbackFn();
             _this.onImageLoaded.emit(true);
@@ -466,14 +464,7 @@ var CanvasWhiteboardComponent = (function () {
             return;
         }
         // Ignore mouse move Events if we're not dragging
-        if (!this._clientDragging
-            && (event.type === 'mousemove'
-                || event.type === 'touchmove'
-                || event.type === 'mouseout'
-                || event.type === 'touchcancel'
-                || event.type === 'mouseup'
-                || event.type === 'touchend'
-                || event.type === 'mouseout')) {
+        if (!this._clientDragging && (event.type === 'mousemove' || event.type === 'touchmove' || event.type === 'mouseout' || event.type === 'touchcancel' || event.type === 'mouseup' || event.type === 'touchend' || event.type === 'mouseout')) {
             return;
         }
         if (event.target == this._incompleteShapesCanvas.nativeElement || event.target == this.canvas.nativeElement) {
@@ -524,14 +515,14 @@ var CanvasWhiteboardComponent = (function () {
      */
     CanvasWhiteboardComponent.prototype._getCanvasEventPosition = function (eventData) {
         var canvasBoundingRect = this.context.canvas.getBoundingClientRect();
-        var hasTouches = (eventData.touches && eventData.touches.length) ? eventData.touches[0] : null;
+        var hasTouches = eventData.touches && eventData.touches.length ? eventData.touches[0] : null;
         if (!hasTouches)
-            hasTouches = (eventData.changedTouches && eventData.changedTouches.length) ? eventData.changedTouches[0] : null;
+            hasTouches = eventData.changedTouches && eventData.changedTouches.length ? eventData.changedTouches[0] : null;
         var event = hasTouches ? hasTouches : eventData;
         var scaleWidth = canvasBoundingRect.width / this.context.canvas.width;
         var scaleHeight = canvasBoundingRect.height / this.context.canvas.height;
-        var xPosition = (event.clientX - canvasBoundingRect.left);
-        var yPosition = (event.clientY - canvasBoundingRect.top);
+        var xPosition = event.clientX - canvasBoundingRect.left;
+        var yPosition = event.clientY - canvasBoundingRect.top;
         xPosition /= this.scaleFactor ? this.scaleFactor : scaleWidth;
         yPosition /= this.scaleFactor ? this.scaleFactor : scaleHeight;
         return new canvas_whiteboard_point_1.CanvasWhiteboardPoint(xPosition / this.context.canvas.width, yPosition / this.context.canvas.height);
@@ -646,7 +637,7 @@ var CanvasWhiteboardComponent = (function () {
     };
     CanvasWhiteboardComponent.prototype._resetIncompleteShapeCanvas = function () {
         this._incompleteShapesCanvasContext.clearRect(0, 0, this._incompleteShapesCanvasContext.canvas.width, this._incompleteShapesCanvasContext.canvas.height);
-        this._incompleteShapesCanvasContext.fillStyle = "transparent";
+        this._incompleteShapesCanvasContext.fillStyle = 'transparent';
         this._incompleteShapesCanvasContext.fillRect(0, 0, this._incompleteShapesCanvasContext.canvas.width, this._incompleteShapesCanvasContext.canvas.height);
     };
     /**
@@ -700,7 +691,6 @@ var CanvasWhiteboardComponent = (function () {
             }, this.batchUpdateTimeoutDuration);
         }
     };
-    ;
     /**
      * Draws an Array of Updates on the canvas.
      *
@@ -718,7 +708,6 @@ var CanvasWhiteboardComponent = (function () {
             this._updatesNotDrawn = this._updatesNotDrawn.concat(updates);
         }
     };
-    ;
     /**
      * Draw any missing updates that were received before the image was loaded
      *
@@ -796,48 +785,49 @@ var CanvasWhiteboardComponent = (function () {
         context.drawImage(image, finalDrawX, finalDrawY, finalDrawWidth, finalDrawHeight, x, y, width, height);
     };
     /**
-     * The HTMLCanvasElement.toDataURL() method returns a data URI containing a representation of the image in the format specified by the type parameter (defaults to PNG).
-     * The returned image is in a resolution of 96 dpi.
-     * If the height or width of the canvas is 0, the string "data:," is returned.
-     * If the requested type is not image/png, but the returned value starts with data:image/png, then the requested type is not supported.
-     * Chrome also supports the image/webp type.
-     *
-     * @param {string} returnedDataType A DOMString indicating the image format. The default format type is image/png.
-     * @param {number} returnedDataQuality A Number between 0 and 1 indicating image quality if the requested type is image/jpeg or image/webp.
-     If this argument is anything else, the default value for image quality is used. The default value is 0.92. Other arguments are ignored.
-     */
+       * The HTMLCanvasElement.toDataURL() method returns a data URI containing a representation of the image in the format specified by the type parameter (defaults to PNG).
+       * The returned image is in a resolution of 96 dpi.
+       * If the height or width of the canvas is 0, the string "data:," is returned.
+       * If the requested type is not image/png, but the returned value starts with data:image/png, then the requested type is not supported.
+       * Chrome also supports the image/webp type.
+       *
+       * @param {string} returnedDataType A DOMString indicating the image format. The default format type is image/png.
+       * @param {number} returnedDataQuality A Number between 0 and 1 indicating image quality if the requested type is image/jpeg or image/webp.
+       If this argument is anything else, the default value for image quality is used. The default value is 0.92. Other arguments are ignored.
+       */
     CanvasWhiteboardComponent.prototype.generateCanvasDataUrl = function (returnedDataType, returnedDataQuality) {
-        if (returnedDataType === void 0) { returnedDataType = "image/png"; }
+        if (returnedDataType === void 0) { returnedDataType = 'image/png'; }
         if (returnedDataQuality === void 0) { returnedDataQuality = 1; }
         return this.context.canvas.toDataURL(returnedDataType, returnedDataQuality);
     };
     /**
-     * Generate a Blob object representing the content drawn on the canvas.
-     * This file may be cached on the disk or stored in memory at the discretion of the user agent.
-     * If type is not specified, the image type is image/png. The created image is in a resolution of 96dpi.
-     * The third argument is used with image/jpeg images to specify the quality of the output.
-     *
-     * @param callbackFn The function that should be executed when the blob is created. Should accept a parameter Blob (for the result).
-     * @param {string} returnedDataType A DOMString indicating the image format. The default type is image/png.
-     * @param {number} returnedDataQuality A Number between 0 and 1 indicating image quality if the requested type is image/jpeg or image/webp.
-     If this argument is anything else, the default value for image quality is used. Other arguments are ignored.
-     */
+       * Generate a Blob object representing the content drawn on the canvas.
+       * This file may be cached on the disk or stored in memory at the discretion of the user agent.
+       * If type is not specified, the image type is image/png. The created image is in a resolution of 96dpi.
+       * The third argument is used with image/jpeg images to specify the quality of the output.
+       *
+       * @param callbackFn The function that should be executed when the blob is created. Should accept a parameter Blob (for the result).
+       * @param {string} returnedDataType A DOMString indicating the image format. The default type is image/png.
+       * @param {number} returnedDataQuality A Number between 0 and 1 indicating image quality if the requested type is image/jpeg or image/webp.
+       If this argument is anything else, the default value for image quality is used. Other arguments are ignored.
+       */
     CanvasWhiteboardComponent.prototype.generateCanvasBlob = function (callbackFn, returnedDataType, returnedDataQuality) {
         var _this = this;
-        if (returnedDataType === void 0) { returnedDataType = "image/png"; }
+        if (returnedDataType === void 0) { returnedDataType = 'image/png'; }
         if (returnedDataQuality === void 0) { returnedDataQuality = 1; }
         var toBlobMethod;
-        if (typeof this.context.canvas.toBlob !== "undefined") {
+        if (typeof this.context.canvas.toBlob !== 'undefined') {
             toBlobMethod = this.context.canvas.toBlob.bind(this.context.canvas);
         }
-        else if (typeof this.context.canvas.msToBlob !== "undefined") {
+        else if (typeof this.context.canvas.msToBlob !== 'undefined') {
             toBlobMethod = function (callback) {
                 callback && callback(_this.context.canvas.msToBlob());
             };
         }
-        toBlobMethod && toBlobMethod(function (blob) {
-            callbackFn && callbackFn(blob, returnedDataType);
-        }, returnedDataType, returnedDataQuality);
+        toBlobMethod &&
+            toBlobMethod(function (blob) {
+                callbackFn && callbackFn(blob, returnedDataType);
+            }, returnedDataType, returnedDataQuality);
     };
     /**
      * Generate a canvas image representation and download it locally
@@ -849,12 +839,11 @@ var CanvasWhiteboardComponent = (function () {
      * @param {string} customFileName? The name of the file that should be downloaded
      */
     CanvasWhiteboardComponent.prototype.downloadCanvasImage = function (returnedDataType, downloadData, customFileName) {
-        if (returnedDataType === void 0) { returnedDataType = "image/png"; }
+        if (returnedDataType === void 0) { returnedDataType = 'image/png'; }
         if (window.navigator.msSaveOrOpenBlob === undefined) {
             var downloadLink = document.createElement('a');
             downloadLink.setAttribute('href', downloadData ? downloadData : this.generateCanvasDataUrl(returnedDataType));
-            var fileName = customFileName ? customFileName
-                : (this.downloadedFileName ? this.downloadedFileName : "canvas_drawing_" + new Date().valueOf());
+            var fileName = customFileName ? customFileName : this.downloadedFileName ? this.downloadedFileName : 'canvas_drawing_' + new Date().valueOf();
             downloadLink.setAttribute('download', fileName + this._generateDataTypeString(returnedDataType));
             document.body.appendChild(downloadLink);
             downloadLink.click();
@@ -877,8 +866,8 @@ var CanvasWhiteboardComponent = (function () {
      * @private
      */
     CanvasWhiteboardComponent.prototype._saveCanvasBlob = function (blob, returnedDataType) {
-        if (returnedDataType === void 0) { returnedDataType = "image/png"; }
-        window.navigator.msSaveOrOpenBlob(blob, "canvas_drawing_" + new Date().valueOf() + this._generateDataTypeString(returnedDataType));
+        if (returnedDataType === void 0) { returnedDataType = 'image/png'; }
+        window.navigator.msSaveOrOpenBlob(blob, 'canvas_drawing_' + new Date().valueOf() + this._generateDataTypeString(returnedDataType));
     };
     /**
      * This method generates a canvas url string or a canvas blob with the presented data type
@@ -889,7 +878,7 @@ var CanvasWhiteboardComponent = (function () {
      * @param returnedDataQuality
      */
     CanvasWhiteboardComponent.prototype.generateCanvasData = function (callback, returnedDataType, returnedDataQuality) {
-        if (returnedDataType === void 0) { returnedDataType = "image/png"; }
+        if (returnedDataType === void 0) { returnedDataType = 'image/png'; }
         if (returnedDataQuality === void 0) { returnedDataQuality = 1; }
         if (window.navigator.msSaveOrOpenBlob === undefined) {
             callback && callback(this.generateCanvasDataUrl(returnedDataType, returnedDataQuality));
@@ -906,7 +895,7 @@ var CanvasWhiteboardComponent = (function () {
      */
     CanvasWhiteboardComponent.prototype.saveLocal = function (returnedDataType) {
         var _this = this;
-        if (returnedDataType === void 0) { returnedDataType = "image/png"; }
+        if (returnedDataType === void 0) { returnedDataType = 'image/png'; }
         this.generateCanvasData(function (generatedData) {
             _this.onSave.emit(generatedData);
             if (_this.shouldDownloadDrawing) {
@@ -916,9 +905,9 @@ var CanvasWhiteboardComponent = (function () {
     };
     CanvasWhiteboardComponent.prototype._generateDataTypeString = function (returnedDataType) {
         if (returnedDataType) {
-            return "." + returnedDataType.split('/')[1];
+            return '.' + returnedDataType.split('/')[1];
         }
-        return "";
+        return '';
     };
     /**
      * Toggles the color picker window, delegating the showColorPicker Input to the ColorPickerComponent.
@@ -965,8 +954,7 @@ var CanvasWhiteboardComponent = (function () {
             subscription.unsubscribe();
     };
     CanvasWhiteboardComponent.prototype._generateUUID = function () {
-        return this._random4() + this._random4() + "-" + this._random4() + "-" + this._random4() + "-" +
-            this._random4() + "-" + this._random4() + this._random4() + this._random4();
+        return this._random4() + this._random4() + '-' + this._random4() + '-' + this._random4() + '-' + this._random4() + '-' + this._random4() + this._random4() + this._random4();
     };
     CanvasWhiteboardComponent.prototype._random4 = function () {
         return Math.floor((1 + Math.random()) * 0x10000)
@@ -987,7 +975,7 @@ var CanvasWhiteboardComponent = (function () {
 CanvasWhiteboardComponent.decorators = [
     { type: core_1.Component, args: [{
                 selector: 'canvas-whiteboard',
-                template: "\n        <div class=\"canvas_wrapper_div\">\n            <div class=\"canvas_whiteboard_buttons\">\n                <canvas-whiteboard-shape-selector *ngIf=\"shapeSelectorEnabled\"\n                                                  [showShapeSelector]=\"showShapeSelector\"\n                                                  [selectedShapeConstructor]=\"selectedShapeConstructor\"\n                                                  [shapeOptions]=\"generateShapePreviewOptions()\"\n                                                  (onToggleShapeSelector)=\"toggleShapeSelector($event)\"\n                                                  (onShapeSelected)=\"selectShape($event)\"></canvas-whiteboard-shape-selector>\n\n                <canvas-whiteboard-colorpicker *ngIf=\"colorPickerEnabled\"\n                                               [previewText]=\"'Fill'\"\n                                               [showColorPicker]=\"showFillColorPicker\"\n                                               [selectedColor]=\"fillColor\"\n                                               (onToggleColorPicker)=\"toggleFillColorPicker($event)\"\n                                               (onColorSelected)=\"changeFillColor($event)\">\n                </canvas-whiteboard-colorpicker>\n\n                <canvas-whiteboard-colorpicker *ngIf=\"colorPickerEnabled\"\n                                               [previewText]=\"'Stroke'\"\n                                               [showColorPicker]=\"showStrokeColorPicker\"\n                                               [selectedColor]=\"strokeColor\"\n                                               (onToggleColorPicker)=\"toggleStrokeColorPicker($event)\"\n                                               (onColorSelected)=\"changeStrokeColor($event)\">\n                </canvas-whiteboard-colorpicker>\n\n\n                <button *ngIf=\"drawButtonEnabled\" (click)=\"toggleDrawingEnabled()\"\n                        [class.canvas_whiteboard_button-draw_animated]=\"getDrawingEnabled()\"\n                        class=\"canvas_whiteboard_button canvas_whiteboard_button-draw\" type=\"button\">\n                    <i [class]=\"drawButtonClass\" aria-hidden=\"true\"></i> {{drawButtonText}}\n                </button>\n\n                <button *ngIf=\"clearButtonEnabled\" (click)=\"clearCanvasLocal()\" type=\"button\"\n                        class=\"canvas_whiteboard_button canvas_whiteboard_button-clear\">\n                    <i [class]=\"clearButtonClass\" aria-hidden=\"true\"></i> {{clearButtonText}}\n                </button>\n\n                <button *ngIf=\"undoButtonEnabled\" (click)=\"undoLocal()\" type=\"button\"\n                        class=\"canvas_whiteboard_button canvas_whiteboard_button-undo\">\n                    <i [class]=\"undoButtonClass\" aria-hidden=\"true\"></i> {{undoButtonText}}\n                </button>\n\n                <button *ngIf=\"redoButtonEnabled\" (click)=\"redoLocal()\" type=\"button\"\n                        class=\"canvas_whiteboard_button canvas_whiteboard_button-redo\">\n                    <i [class]=\"redoButtonClass\" aria-hidden=\"true\"></i> {{redoButtonText}}\n                </button>\n                <button *ngIf=\"saveDataButtonEnabled\" (click)=\"saveLocal()\" type=\"button\"\n                        class=\"canvas_whiteboard_button canvas_whiteboard_button-save\">\n                    <i [class]=\"saveDataButtonClass\" aria-hidden=\"true\"></i> {{saveDataButtonText}}\n                </button>\n            </div>\n            <canvas #canvas class=\"canvas_whiteboard\"></canvas>\n            <canvas #incompleteShapesCanvas class=\"incomplete_shapes_canvas_whiteboard\"\n                    (mousedown)=\"canvasUserEvents($event)\" (mouseup)=\"canvasUserEvents($event)\"\n                    (mousemove)=\"canvasUserEvents($event)\" (mouseout)=\"canvasUserEvents($event)\"\n                    (touchstart)=\"canvasUserEvents($event)\" (touchmove)=\"canvasUserEvents($event)\"\n                    (touchend)=\"canvasUserEvents($event)\" (touchcancel)=\"canvasUserEvents($event)\"></canvas>\n        </div>\n    ",
+                template: "\n    <div class=\"canvas_wrapper_div\">\n      <div class=\"canvas_whiteboard_buttons\">\n        <canvas-whiteboard-shape-selector *ngIf=\"shapeSelectorEnabled\" [showShapeSelector]=\"showShapeSelector\" [selectedShapeConstructor]=\"selectedShapeConstructor\" [shapeOptions]=\"generateShapePreviewOptions()\" (onToggleShapeSelector)=\"toggleShapeSelector($event)\" (onShapeSelected)=\"selectShape($event)\"></canvas-whiteboard-shape-selector>\n\n        <canvas-whiteboard-colorpicker *ngIf=\"colorPickerEnabled\" [previewText]=\"'Fill'\" [showColorPicker]=\"showFillColorPicker\" [selectedColor]=\"fillColor\" (onToggleColorPicker)=\"toggleFillColorPicker($event)\" (onColorSelected)=\"changeFillColor($event)\"> </canvas-whiteboard-colorpicker>\n\n        <canvas-whiteboard-colorpicker *ngIf=\"colorPickerEnabled\" [previewText]=\"'Stroke'\" [showColorPicker]=\"showStrokeColorPicker\" [selectedColor]=\"strokeColor\" (onToggleColorPicker)=\"toggleStrokeColorPicker($event)\" (onColorSelected)=\"changeStrokeColor($event)\"> </canvas-whiteboard-colorpicker>\n\n        <button *ngIf=\"drawButtonEnabled\" (click)=\"toggleDrawingEnabled()\" [class.canvas_whiteboard_button-draw_animated]=\"getDrawingEnabled()\" class=\"canvas_whiteboard_button canvas_whiteboard_button-draw\" type=\"button\"><i [class]=\"drawButtonClass\" aria-hidden=\"true\"></i> {{ drawButtonText }}</button>\n\n        <button *ngIf=\"clearButtonEnabled\" (click)=\"clearCanvasLocal()\" type=\"button\" class=\"canvas_whiteboard_button canvas_whiteboard_button-clear\"><i [class]=\"clearButtonClass\" aria-hidden=\"true\"></i> {{ clearButtonText }}</button>\n\n        <button *ngIf=\"undoButtonEnabled\" (click)=\"undoLocal()\" type=\"button\" class=\"canvas_whiteboard_button canvas_whiteboard_button-undo\"><i [class]=\"undoButtonClass\" aria-hidden=\"true\"></i> {{ undoButtonText }}</button>\n\n        <button *ngIf=\"redoButtonEnabled\" (click)=\"redoLocal()\" type=\"button\" class=\"canvas_whiteboard_button canvas_whiteboard_button-redo\"><i [class]=\"redoButtonClass\" aria-hidden=\"true\"></i> {{ redoButtonText }}</button>\n        <button *ngIf=\"saveDataButtonEnabled\" (click)=\"saveLocal()\" type=\"button\" class=\"canvas_whiteboard_button canvas_whiteboard_button-save\"><i [class]=\"saveDataButtonClass\" aria-hidden=\"true\"></i> {{ saveDataButtonText }}</button>\n      </div>\n      <canvas #canvas class=\"canvas_whiteboard\"></canvas>\n      <canvas #incompleteShapesCanvas class=\"incomplete_shapes_canvas_whiteboard\" (mousedown)=\"canvasUserEvents($event)\" (mouseup)=\"canvasUserEvents($event)\" (mousemove)=\"canvasUserEvents($event)\" (mouseout)=\"canvasUserEvents($event)\" (touchstart)=\"canvasUserEvents($event)\" (touchmove)=\"canvasUserEvents($event)\" (touchend)=\"canvasUserEvents($event)\" (touchcancel)=\"canvasUserEvents($event)\"></canvas>\n    </div>\n  ",
                 styles: [template_1.DEFAULT_STYLES]
             },] },
 ];
