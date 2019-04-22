@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var CanvasWhiteboardShapeOptions = (function () {
+var CanvasWhiteboardShapeOptions = /** @class */ (function () {
     function CanvasWhiteboardShapeOptions() {
         this.shouldFillShape = false;
         this.fillStyle = null;

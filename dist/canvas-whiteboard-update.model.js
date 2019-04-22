@@ -6,7 +6,7 @@ var CanvasWhiteboardUpdateType;
     CanvasWhiteboardUpdateType[CanvasWhiteboardUpdateType["DRAG"] = 1] = "DRAG";
     CanvasWhiteboardUpdateType[CanvasWhiteboardUpdateType["STOP"] = 2] = "STOP";
 })(CanvasWhiteboardUpdateType = exports.CanvasWhiteboardUpdateType || (exports.CanvasWhiteboardUpdateType = {}));
-var CanvasWhiteboardUpdate = (function () {
+var CanvasWhiteboardUpdate = /** @class */ (function () {
     function CanvasWhiteboardUpdate(x, y, type, UUID, selectedShape, selectedShapeOptions) {
         this.x = x;
         this.y = y;

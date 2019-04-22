@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var canvas_whiteboard_point_1 = require("../canvas-whiteboard-point");
 var canvas_whiteboard_shape_options_1 = require("./canvas-whiteboard-shape-options");
-var CanvasWhiteboardShapePreviewComponent = (function () {
+var CanvasWhiteboardShapePreviewComponent = /** @class */ (function () {
     function CanvasWhiteboardShapePreviewComponent() {
     }
     CanvasWhiteboardShapePreviewComponent.prototype.ngOnInit = function () {
@@ -26,21 +26,21 @@ var CanvasWhiteboardShapePreviewComponent = (function () {
     };
     CanvasWhiteboardShapePreviewComponent.prototype.ngOnDestroy = function () {
     };
+    CanvasWhiteboardShapePreviewComponent.decorators = [
+        { type: core_1.Component, args: [{
+                    selector: "canvas-whiteboard-shape-preview",
+                    template: "\n        <canvas #canvasWhiteboardShapePreview width=\"50px\" height=\"50px\" class=\"canvas-whiteboard-shape-preview-canvas\"></canvas>\n    ",
+                    styles: ["\n        .canvas-whiteboard-shape-preview-canvas {\n            cursor: pointer;\n        }\n    "]
+                },] },
+    ];
+    /** @nocollapse */
+    CanvasWhiteboardShapePreviewComponent.ctorParameters = function () { return []; };
+    CanvasWhiteboardShapePreviewComponent.propDecorators = {
+        'shapeConstructor': [{ type: core_1.Input },],
+        'shapeOptions': [{ type: core_1.Input },],
+        'canvas': [{ type: core_1.ViewChild, args: ['canvasWhiteboardShapePreview',] },],
+    };
     return CanvasWhiteboardShapePreviewComponent;
 }());
-CanvasWhiteboardShapePreviewComponent.decorators = [
-    { type: core_1.Component, args: [{
-                selector: "canvas-whiteboard-shape-preview",
-                template: "\n        <canvas #canvasWhiteboardShapePreview width=\"50px\" height=\"50px\" class=\"canvas-whiteboard-shape-preview-canvas\"></canvas>\n    ",
-                styles: ["\n        .canvas-whiteboard-shape-preview-canvas {\n            cursor: pointer;\n        }\n    "]
-            },] },
-];
-/** @nocollapse */
-CanvasWhiteboardShapePreviewComponent.ctorParameters = function () { return []; };
-CanvasWhiteboardShapePreviewComponent.propDecorators = {
-    'shapeConstructor': [{ type: core_1.Input },],
-    'shapeOptions': [{ type: core_1.Input },],
-    'canvas': [{ type: core_1.ViewChild, args: ['canvasWhiteboardShapePreview',] },],
-};
 exports.CanvasWhiteboardShapePreviewComponent = CanvasWhiteboardShapePreviewComponent;
 //# sourceMappingURL=canvas-whiteboard-shape-preview.component.js.map

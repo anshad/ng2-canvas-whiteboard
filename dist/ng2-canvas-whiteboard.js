@@ -28,30 +28,30 @@ var circle_shape_1 = require("./shapes/circle-shape");
 exports.CircleShape = circle_shape_1.CircleShape;
 var canvas_whiteboard_shape_selector_component_2 = require("./shapes/canvas-whiteboard-shape-selector.component");
 exports.CanvasWhiteboardShapeSelectorComponent = canvas_whiteboard_shape_selector_component_2.CanvasWhiteboardShapeSelectorComponent;
-var CanvasWhiteboardModule = (function () {
+var CanvasWhiteboardModule = /** @class */ (function () {
     function CanvasWhiteboardModule() {
     }
+    CanvasWhiteboardModule.decorators = [
+        { type: core_1.NgModule, args: [{
+                    imports: [
+                        common_1.CommonModule
+                    ],
+                    declarations: [
+                        canvas_whiteboard_component_1.CanvasWhiteboardComponent,
+                        canvas_whiteboard_colorpicker_component_1.CanvasWhiteboardColorPickerComponent,
+                        canvas_whiteboard_shape_selector_component_1.CanvasWhiteboardShapeSelectorComponent,
+                        canvas_whiteboard_shape_preview_component_1.CanvasWhiteboardShapePreviewComponent
+                    ],
+                    providers: [
+                        canvas_whiteboard_service_1.CanvasWhiteboardService,
+                        canvas_whiteboard_shape_service_1.CanvasWhiteboardShapeService
+                    ],
+                    exports: [canvas_whiteboard_component_1.CanvasWhiteboardComponent]
+                },] },
+    ];
+    /** @nocollapse */
+    CanvasWhiteboardModule.ctorParameters = function () { return []; };
     return CanvasWhiteboardModule;
 }());
-CanvasWhiteboardModule.decorators = [
-    { type: core_1.NgModule, args: [{
-                imports: [
-                    common_1.CommonModule
-                ],
-                declarations: [
-                    canvas_whiteboard_component_1.CanvasWhiteboardComponent,
-                    canvas_whiteboard_colorpicker_component_1.CanvasWhiteboardColorPickerComponent,
-                    canvas_whiteboard_shape_selector_component_1.CanvasWhiteboardShapeSelectorComponent,
-                    canvas_whiteboard_shape_preview_component_1.CanvasWhiteboardShapePreviewComponent
-                ],
-                providers: [
-                    canvas_whiteboard_service_1.CanvasWhiteboardService,
-                    canvas_whiteboard_shape_service_1.CanvasWhiteboardShapeService
-                ],
-                exports: [canvas_whiteboard_component_1.CanvasWhiteboardComponent]
-            },] },
-];
-/** @nocollapse */
-CanvasWhiteboardModule.ctorParameters = function () { return []; };
 exports.CanvasWhiteboardModule = CanvasWhiteboardModule;
 //# sourceMappingURL=ng2-canvas-whiteboard.js.map

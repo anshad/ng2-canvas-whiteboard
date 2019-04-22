@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var canvas_whiteboard_shape_1 = require("./canvas-whiteboard-shape");
 var canvas_whiteboard_point_1 = require("../canvas-whiteboard-point");
-var RectangleShape = (function (_super) {
+var RectangleShape = /** @class */ (function (_super) {
     __extends(RectangleShape, _super);
     function RectangleShape(positionPoint, options, width, height) {
         var _this = _super.call(this, positionPoint, options) || this;

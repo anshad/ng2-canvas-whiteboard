@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var CanvasWhiteboardPoint = (function () {
+var CanvasWhiteboardPoint = /** @class */ (function () {
     function CanvasWhiteboardPoint(x, y) {
         this.x = x;
         this.y = y;

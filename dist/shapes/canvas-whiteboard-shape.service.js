@@ -8,7 +8,7 @@ var free_hand_shape_1 = require("./free-hand-shape");
 var smiley_shape_1 = require("./smiley-shape");
 var star_shape_1 = require("./star-shape");
 var line_shape_1 = require("./line-shape");
-var CanvasWhiteboardShapeService = (function () {
+var CanvasWhiteboardShapeService = /** @class */ (function () {
     function CanvasWhiteboardShapeService() {
         this._registeredShapesSubject = new BehaviorSubject_1.BehaviorSubject([free_hand_shape_1.FreeHandShape, line_shape_1.LineShape, rectangle_shape_1.RectangleShape, circle_shape_1.CircleShape, star_shape_1.StarShape, smiley_shape_1.SmileyShape]);
         this.registeredShapes$ = this._registeredShapesSubject.asObservable();
@@ -48,12 +48,12 @@ var CanvasWhiteboardShapeService = (function () {
     CanvasWhiteboardShapeService.prototype.unregisterShapes = function (shapes) {
         this._registeredShapesSubject.next(this.getCurrentRegisteredShapes().filter(function (shape) { return shapes.indexOf(shape) == -1; }));
     };
+    CanvasWhiteboardShapeService.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    CanvasWhiteboardShapeService.ctorParameters = function () { return []; };
     return CanvasWhiteboardShapeService;
 }());
-CanvasWhiteboardShapeService.decorators = [
-    { type: core_1.Injectable },
-];
-/** @nocollapse */
-CanvasWhiteboardShapeService.ctorParameters = function () { return []; };
 exports.CanvasWhiteboardShapeService = CanvasWhiteboardShapeService;
 //# sourceMappingURL=canvas-whiteboard-shape.service.js.map
